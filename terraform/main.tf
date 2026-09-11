@@ -175,7 +175,7 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private.id
 }
 
-# ─── VPC Endpoints (replaces NAT gateway) ────────────────────────────────────
+# ─── VPC Endpoints (replaces NAT gateway coz NAT gateways are costly) ────────────────────────────────────
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_id              = aws_vpc.main.id
