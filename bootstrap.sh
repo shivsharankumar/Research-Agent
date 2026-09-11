@@ -2,8 +2,8 @@
 set -e
 
 REGION=${1:-us-east-1}
-BUCKET="research-agent-tfstate"
-TABLE="research-agent-tf-locks"
+BUCKET="research-agent-tfstate-665908544460"
+TABLE="research-agent-tf-locks-665908544460"
 
 echo "Creating S3 bucket: $BUCKET in region: $REGION"
 
