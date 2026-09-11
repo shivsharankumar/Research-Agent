@@ -234,51 +234,69 @@ def _build_html() -> str:
 <meta charset="utf-8">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;color:#c9d1d9;padding:24px}
-h1{color:#58a6ff;font-size:1.6rem;margin-bottom:4px}
-.subtitle{color:#8b949e;font-size:0.85rem;margin-bottom:24px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:20px}
-.section-title{color:#58a6ff;font-size:1rem;font-weight:600;margin-bottom:14px}
+:root{
+  --bg:#0a0e14;--panel:#10151f;--line:#1e2734;--line-bright:#2a3644;
+  --ink:#d7dee8;--ink-dim:#7d8ba0;--signal:#ffb454;--ok:#5fd88f;--err:#ff6b6b;--warn:#ffb454;
+  --mono:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;
+}
+body{font-family:var(--sans);background:linear-gradient(180deg,rgba(255,180,84,0.04),transparent 220px),var(--bg);color:var(--ink);padding:32px 24px 64px}
+.wrap{max-width:960px;margin:0 auto}
+header{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:28px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1{font-family:var(--mono);color:var(--ink);font-size:1.3rem;font-weight:600;letter-spacing:-0.01em}
+h1::before{content:"> ";color:var(--signal)}
+.subtitle{color:var(--ink-dim);font-size:0.8rem;font-family:var(--mono)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:22px 24px;margin-bottom:16px;position:relative}
+.card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--line-bright);border-radius:3px 0 0 3px}
+.section-title{color:var(--ink);font-size:0.82rem;font-weight:700;margin-bottom:18px;font-family:var(--mono);text-transform:lowercase}
 .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
-.btn{background:#238636;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:0.9rem;cursor:pointer;font-weight:600}
-.btn:hover{background:#2ea043}.btn:disabled{opacity:0.5;cursor:not-allowed}
-.btn-gray{background:#21262d;border:1px solid #30363d}.btn-gray:hover{background:#30363d}
-select{background:#0d1117;border:1px solid #30363d;color:#c9d1d9;padding:8px 12px;border-radius:6px;font-size:0.9rem}
+.btn{background:var(--signal);color:#1a1206;border:none;padding:10px 20px;border-radius:3px;font-size:0.85rem;cursor:pointer;font-weight:700;font-family:var(--mono);letter-spacing:0.01em;transition:filter .15s ease}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:0.4;cursor:not-allowed;filter:none}
+.btn-gray{background:transparent;color:var(--ink);border:1px solid var(--line-bright);font-weight:600}
+.btn-gray:hover{border-color:var(--signal);background:rgba(255,180,84,0.06);filter:none}
+select{background:#060a10;border:1px solid var(--line);color:var(--ink);padding:9px 13px;border-radius:3px;font-size:0.87rem;font-family:var(--sans);outline:none}
+select:focus{border-color:var(--signal)}
 table{width:100%;border-collapse:collapse}
-th{background:#0d1117;color:#8b949e;padding:10px 12px;text-align:left;font-size:0.8rem;text-transform:uppercase;border-bottom:1px solid #30363d}
-td{padding:10px 12px;border-bottom:1px solid #21262d;font-size:0.85rem;vertical-align:top}
-.blocked{color:#3fb950;font-weight:600}.passed{color:#f85149;font-weight:600}
-.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600}
-.badge-jailbreak{background:#3d1f2e;color:#f778ba}
-.badge-xpia{background:#1f2d3d;color:#79c0ff}
-.badge-crescendo{background:#2d2d1f;color:#d29922}
-.badge-skeleton{background:#2d1f3d;color:#d2a8ff}
+th{background:#060a10;color:var(--ink-dim);padding:10px 12px;text-align:left;font-size:0.72rem;text-transform:lowercase;letter-spacing:0.03em;border-bottom:1px solid var(--line);font-family:var(--mono);font-weight:600}
+td{padding:10px 12px;border-bottom:1px solid var(--line);font-size:0.85rem;vertical-align:top}
+.blocked{color:var(--ok);font-weight:600;font-family:var(--mono);font-size:0.78rem}
+.passed{color:var(--err);font-weight:600;font-family:var(--mono);font-size:0.78rem}
+.badge{display:inline-block;padding:3px 9px;border-radius:3px;font-size:0.72rem;font-weight:600;font-family:var(--mono);border:1px solid transparent}
+.badge-jailbreak{background:rgba(247,120,186,0.1);color:#f778ba;border-color:rgba(247,120,186,0.3)}
+.badge-xpia{background:rgba(121,192,255,0.1);color:#79c0ff;border-color:rgba(121,192,255,0.3)}
+.badge-crescendo{background:rgba(255,180,84,0.1);color:var(--signal);border-color:rgba(255,180,84,0.3)}
+.badge-skeleton{background:rgba(210,168,255,0.1);color:#d2a8ff;border-color:rgba(210,168,255,0.3)}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.stat{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:14px;text-align:center}
-.stat-val{font-size:1.6rem;font-weight:700;color:#58a6ff}
-.stat-label{font-size:0.75rem;color:#8b949e;margin-top:4px}
+.stat{background:#060a10;border:1px solid var(--line);border-radius:3px;padding:16px;text-align:center}
+.stat-val{font-size:1.6rem;font-weight:700;color:var(--ink);font-family:var(--mono)}
+.stat-label{font-size:0.72rem;color:var(--ink-dim);margin-top:6px;font-family:var(--mono);text-transform:lowercase}
 .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
-.dot-green{background:#3fb950}.dot-red{background:#f85149}
-#spinner{display:none;color:#8b949e;font-size:0.85rem;margin-left:8px}
-.empty{color:#8b949e;text-align:center;padding:40px;font-size:0.9rem}
+.dot-green{background:var(--ok)}.dot-red{background:var(--err)}
+#spinner{display:none;color:var(--ink-dim);font-size:0.82rem;margin-left:8px;font-family:var(--mono)}
+.empty{color:var(--ink-dim);text-align:center;padding:40px;font-size:0.88rem;font-family:var(--mono)}
+@media(max-width:700px){.stat-grid{grid-template-columns:repeat(2,1fr)}header{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
-<h1>PyRIT Red Team Dashboard</h1>
-<p class="subtitle">AI Security Testing · PyRIT 0.14.0 · SQLite + Redis persistence</p>
+<div class="wrap">
+<header>
+  <h1>PyRIT Red Team Dashboard</h1>
+  <p class="subtitle">AI Security Testing · PyRIT 0.14.0 · SQLite + Redis persistence</p>
+</header>
 
 <div class="card">
-  <div class="section-title">System Status</div>
+  <div class="section-title">system status</div>
   <div class="stat-grid">
     <div class="stat"><div class="stat-val" id="s-total">-</div><div class="stat-label">Attacks Run</div></div>
-    <div class="stat"><div class="stat-val" style="color:#3fb950" id="s-blocked">-</div><div class="stat-label">Blocked</div></div>
-    <div class="stat"><div class="stat-val" style="color:#f85149" id="s-passed">-</div><div class="stat-label">Passed (Risk)</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--ok)" id="s-blocked">-</div><div class="stat-label">Blocked</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--err)" id="s-passed">-</div><div class="stat-label">Passed (Risk)</div></div>
     <div class="stat"><div class="stat-val" id="s-target">-</div><div class="stat-label">Target Health</div></div>
   </div>
 </div>
 
 <div class="card">
-  <div class="section-title">Run Attacks</div>
+  <div class="section-title">run attacks</div>
   <div class="controls">
     <select id="attack-select">
       <option value="all">All Attacks</option>
@@ -293,16 +311,16 @@ td{padding:10px 12px;border-bottom:1px solid #21262d;font-size:0.85rem;vertical-
     <button class="btn btn-gray" onclick="loadResults()">Refresh</button>
     <span id="spinner">Running attacks, please wait...</span>
   </div>
-  <div style="color:#8b949e;font-size:0.8rem">
-    <strong>Jailbreak</strong>: Direct bypass &nbsp;|&nbsp;
-    <strong>XPIA</strong>: Cross-prompt injection &nbsp;|&nbsp;
-    <strong>Crescendo</strong>: Escalating multi-turn &nbsp;|&nbsp;
-    <strong>Skeleton Key</strong>: Authority manipulation
+  <div style="color:var(--ink-dim);font-size:0.8rem">
+    <strong style="color:var(--ink)">Jailbreak</strong>: Direct bypass &nbsp;|&nbsp;
+    <strong style="color:var(--ink)">XPIA</strong>: Cross-prompt injection &nbsp;|&nbsp;
+    <strong style="color:var(--ink)">Crescendo</strong>: Escalating multi-turn &nbsp;|&nbsp;
+    <strong style="color:var(--ink)">Skeleton Key</strong>: Authority manipulation
   </div>
 </div>
 
 <div class="card">
-  <div class="section-title">Attack Results</div>
+  <div class="section-title">attack results</div>
   <table>
     <thead><tr>
       <th>Attack Type</th><th>Prompt Sent</th><th>Response Preview</th>
@@ -310,6 +328,7 @@ td{padding:10px 12px;border-bottom:1px solid #21262d;font-size:0.85rem;vertical-
     </tr></thead>
     <tbody id="tbody"><tr><td colspan="6" class="empty">No attacks run yet.</td></tr></tbody>
   </table>
+</div>
 </div>
 
 <script>
